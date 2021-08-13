@@ -17,10 +17,7 @@ import os
 if os.path.exists('env.py'):
     import env
 
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'my-app-auth'
-JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
-JWT_AUTH_SECURE = True
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
 }
@@ -60,7 +57,8 @@ INSTALLED_APPS = [
     'django_filters',
 
     'rest_framework.authtoken', 
-    'dj_rest_auth', 
+    'dj_rest_auth',
+
     'django.contrib.sites', 
     'allauth', 'allauth.account', 
     'allauth.socialaccount', 
@@ -86,6 +84,12 @@ REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': [( 'rest_framework.authentic
 if 'DEV' not in os.environ:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
         'rest_framework.renderers.JSONRenderer']
+
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_SECURE = True
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+
 
 REST_AUTH_SERIALIZERS = {'USER_DETAILS_SERIALIZER': 'drf_api.serializers.CurrentUserSerializer'}
 
