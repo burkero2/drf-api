@@ -13,6 +13,7 @@ from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 import os
+import re
 
 if os.path.exists('env.py'):
     import env
@@ -111,13 +112,14 @@ MIDDLEWARE = [
 if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN'), 
-        os.environ.get('CLIENT_ORIGIN_DEV'),
-    ]
-else:
-    CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^https://.*\.gitpod\.io$",
     ]
 
+if 'CLIENT_ORIGIN_DEV' in os.environ:
+    extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        rf"{extracted_url}(eu|us)\d+\.gitpod\.io$",
+    ]
+    
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'drf_api.urls'
